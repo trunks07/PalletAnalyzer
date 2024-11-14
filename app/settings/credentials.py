@@ -14,7 +14,8 @@ class Security:
 class Openai:
     project_id = os.getenv("OPENAI_PROJECT_ID")
     organization = os.getenv("OPENAI_ORGANIZATIOM")
-    secret_key = os.getenv("OPENAI_SECRET_KEY")
+    api_key = os.getenv("OPENAI_API_KEY")
+    model = os.getenv("OPENAI_MODEL")
 
 class BusinessCentral:
     if EnvSettings.environment == "sandbox":

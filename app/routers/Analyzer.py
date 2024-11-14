@@ -2,6 +2,7 @@ from fastapi import FastAPI, APIRouter, HTTPException, Request, status
 from fastapi.responses import JSONResponse
 
 from app.services.OpenAIService import OpenAIzService
+from app.services.BusinessCentralService import BusinessCentral as BusinessCentralService
 
 router = APIRouter()
 
@@ -9,8 +10,16 @@ router = APIRouter()
 async def chat(request: Request):
     try:
         message = await request.json()
-        token = await OpenAIzService.client()
-        response = await OpenAIzService(token, message["message"])
+
+        product_details = await BusinessCentralService.getDetailedProducts(message["sku"])
+        measurement = await BusinessCentralService.getUnitMeasurement(message["sku"])
+
+        response = {
+            "product_details": product_details,
+            "measurement": measurement
+        }
+
+        # response = await OpenAIzService.completion(message["message"])
 
         status_code = status.HTTP_200_OK
         response = {"status": status_code, "data": response}

@@ -1,18 +1,15 @@
 from openai import OpenAI
 from app.settings.credentials import Openai
 
+client = OpenAI(
+    organization = Openai.organization,
+    project = Openai.project_id,
+)
+
 class OpenAIzService:
-    async def client():
-        client = OpenAI(
-            organization=Openai.organization,
-            project=Openai.project_id,
-        )
-
-        return client
-
-    async def completion(client, message):
+    async def completion(message):
         completion = client.chat.completions.create(
-        model="gpt-3.5-turbo",
+        model = Openai.model,
             messages=[
                 {"role": "user", "content": message}
             ]

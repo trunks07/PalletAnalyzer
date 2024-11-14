@@ -61,7 +61,9 @@ class BusinessCentral:
     async def getUnitMeasurement(number):
         token = await BusinessCentralApi.getBcToken()
         params = f"Company('{BusinessCentralCredentials.company}')/ItemsUnitofMeasure?$filter=Item_No eq '"+number+"'"
-        measurements = await BusinessCentralApi.odataGet(token, params)
+
+        measurement_data = await BusinessCentralApi.odataGet(token, params)
+        measurements = BusinessCentralTrait.processMeasurementData(measurement_data)
 
         return measurements
     

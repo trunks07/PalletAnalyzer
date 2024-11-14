@@ -47,3 +47,8 @@ class BusinessCentral:
     CIACustomer = os.getenv("CIA_CUSTOMER")
     chargeItemId = os.getenv("CHARGE_ITEM_ID")
     chargeItemNumber = os.getenv("CHARGE_ITEM_NUMBER")
+
+class Gemini:
+    apiKey = os.getenv("GEMINI_API_KEY")
+    endPoint = os.getenv("GEMINI_ENDPOINT")
+    model = os.getenv("GEMINI_MODEL")

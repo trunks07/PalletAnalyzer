@@ -1,32 +1,51 @@
+import json
+
 from fastapi import FastAPI, APIRouter, HTTPException, Request, status
 from fastapi.responses import JSONResponse
 
 from app.services.OpenAIService import OpenAIzService
 from app.services.BusinessCentralService import BusinessCentral as BusinessCentralService
+from app.services.PalletService import PalletService
+from app.services.GeminiService import GeminiService
+
+from app.libs.helper import convert_to_json
 
 router = APIRouter()
 
 @router.get("/chat", tags=["analyzer"])
 async def chat(request: Request):
     try:
-        message = await request.json()
+        request_data = await request.json()
 
-        product_details = await BusinessCentralService.getDetailedProducts(message["sku"])
-        measurement = await BusinessCentralService.getUnitMeasurement(message["sku"])
+        product_details = await BusinessCentralService.getDetailedProducts(request_data["sku"])
+        measurement = await BusinessCentralService.getUnitMeasurement(request_data["sku"])
 
-        response = {
-            "product_details": product_details,
-            "measurement": measurement
-        }
+        if len(product_details) > 0:
+            pallets = PalletService.list()
+            message = f"This are my pallets {json.dumps(pallets)}, I have a product {product_details[0]["title"]} with dimension {json.dumps(measurement)}. Now from that can you select the most suitable pallet to use or disassemble the product into several pieces if needed (You can do the estimation how many fragments should the product be disassembled to fit in the pallets but please cosider the product assembly and divide it accordingly (Head, Arm, Leg) if applicable. its all up to you how you want it to be divided) and select the pallet to use, all the measurement I used were in inches. Then from that give us the pallets will be used which part is going to that pallent just return a json response."
+            response = await GeminiService.completion(message)
 
-        # response = await OpenAIzService.completion(message["message"])
+            responses = []
+
+            for data in response["candidates"]:
+                if "content" in data:
+                    content = data["content"]
+                    if "parts" in content:
+                        for part in content["parts"]:
+                            if "text" in part:
+                                print(part)
+                                json_response = convert_to_json(part["text"])
+
+                                responses.append(json_response)
+
+            response = responses
+        else:
+            response = "Product Not Found!"
 
         status_code = status.HTTP_200_OK
         response = {"status": status_code, "data": response}
     except HTTPException  as e:
         status_code = status.HTTP_400_BAD_REQUEST
         response = {"status": status_code, "error": e}
-
-    print(response)
 
     return JSONResponse(status_code=status_code, content=response)

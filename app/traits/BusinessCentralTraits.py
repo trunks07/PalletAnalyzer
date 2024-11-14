@@ -157,3 +157,14 @@ class BusinessCentral:
             array.append(datum)
 
         return array
+    
+    def processMeasurementData(data):
+        measurement = data["value"][0]
+        return {
+            "sku": measurement["Item_No"],
+            "height": measurement["Height"],
+            "width": measurement["Width"],
+            "length": measurement["Length"],
+            "cubage": measurement["Cubage"],
+            "weight": measurement["Weight"]
+        }

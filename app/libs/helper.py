@@ -2,6 +2,7 @@ import base64
 import uuid
 import pytz
 import json
+import re
 import os
 
 import xml.etree.ElementTree as ET
@@ -212,3 +213,20 @@ def timeZoneTimeStamp():
     formatted_time = formatted_time[:-2] + ':' + formatted_time[-2:]
 
     return formatted_time
+
+def convert_to_json(markdown_str):
+    # Extract the JSON string inside the markdown code block
+    match = re.search(r'```json\n(.*?)\n```', markdown_str, re.DOTALL)
+    
+    if match:
+        json_string = match.group(1)  # Extract the JSON part
+        try:
+            # Parse the JSON string into a Python dictionary (JSON object)
+            parsed_json = json.loads(json_string)
+            return parsed_json
+        except json.JSONDecodeError as e:
+            print(f"Error parsing JSON: {e}")
+            return None
+    else:
+        print("No valid JSON found in the string.")
+        return None

@@ -52,3 +52,10 @@ class Gemini:
     apiKey = os.getenv("GEMINI_API_KEY")
     endPoint = os.getenv("GEMINI_ENDPOINT")
     model = os.getenv("GEMINI_MODEL")
+    baseUrl = os.getenv("GEMINI_BASE_URL")
+
+class Catalog:
+    endpoint = os.getenv("CATALOG_ENDPOINT")
+
+class S3:
+    endpoint = os.getenv("S3_ENDPOINT")

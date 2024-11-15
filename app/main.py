@@ -8,7 +8,7 @@ from fastapi.exceptions import RequestValidationError
 from fastapi import Depends, FastAPI, Request, status
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
-from app.routers import Analyzer, System
+from app.routers import Analyzer, System, Catalog
 from app.settings.environment import Env
 from app.settings.credentials import Security
 from app.services.EmailService import EmailService
@@ -79,7 +79,17 @@ analyzer_app.add_middleware(
 )
 analyzer_app.add_middleware(GZipMiddleware)
 
+catalog_app = FastAPI()
+catalog_app.include_router(Catalog.router)
+catalog_app.add_middleware(
+    SecurityMiddleware,
+    expected_clientId=Security.clientId,
+    expected_clientSecret=Security.clientSecret
+)
+catalog_app.add_middleware(GZipMiddleware)
+
 app.mount('/analyzer', analyzer_app)
+app.mount('/catalogs', catalog_app)
 
 # Local server setup for testing
 if __name__ == "__main__":

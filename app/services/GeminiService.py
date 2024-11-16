@@ -73,6 +73,7 @@ class GeminiService:
         response_data = await GeminiApi.POST(params, headers, generate_data)
 
         responses = []
+
         # Extract and print the generated content
         candidates = response_data.get("candidates", [])
         for candidate in candidates:

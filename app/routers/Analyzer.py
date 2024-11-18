@@ -55,7 +55,7 @@ async def chat(request: Request):
 
     return JSONResponse(status_code=status_code, content=response)
 
-@router.get("/analyze-image", tags=["analyzer"])
+@router.post("/analyze-image", tags=["analyzer"])
 async def analyzeImage(request: Request):
     try:
         request_data = await request.json()

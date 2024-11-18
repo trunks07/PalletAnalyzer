@@ -21,6 +21,14 @@ app = FastAPI()
 
 asgi_handler = Mangum(app)
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],  # Allow all origins (change to a specific list if needed)
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE"],  # Allow all HTTP methods (GET, POST, OPTIONS, etc.)
+    allow_headers=["*"],  # Allow all headers
+)
+
 def lambda_handler(event, context):
     # For API Gateway events, return using Mangum
     return asgi_handler(event, context)

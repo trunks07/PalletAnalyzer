@@ -43,7 +43,7 @@ class BusinessCentral:
 
         async with aiohttp.ClientSession() as session:
             async with session.get(url, data=body, headers=headers) as resp:
-
+                print(resp)
                 response = await resp.json()
 
         return response

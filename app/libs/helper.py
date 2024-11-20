@@ -230,3 +230,9 @@ def convert_to_json(markdown_str):
     else:
         print("No valid JSON found in the string.")
         return None
+
+def array_to_filter(array_list):
+    # Convert the list to the desired string format
+    formatted_string = f"({', '.join(map(str, array_list))})" 
+
+    return formatted_string

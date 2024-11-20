@@ -1,6 +1,6 @@
 from app.libs.api import BusinessCentral as BusinessCentralApi
 from app.traits.BusinessCentralTraits import BusinessCentral as BusinessCentralTrait
-from app.libs.helper import getDiscountPercentage, orderDateFormat
+from app.libs.helper import getDiscountPercentage, orderDateFormat, array_to_filter
 from app.settings.credentials import BusinessCentral as BusinessCentralCredentials
 
 from datetime import datetime
@@ -14,7 +14,17 @@ class BusinessCentral:
         products = BusinessCentralTrait.processProducts(productsData)
 
         return products
+    
+    async def getProductLists(array):
+        token = await BusinessCentralApi.getBcToken()
 
+        filter_string = array_to_filter(array)
+
+        params = f"/Company('{BusinessCentralCredentials.company}')/Items?$filter=No in {str(filter_string)}"
+        productsData = await BusinessCentralApi.odataGet(token, params)
+        products = BusinessCentralTrait.processProducts(productsData)
+
+        return products
     async def getProduct(number):
         token = await BusinessCentralApi.getBcToken()
         params = f"/Company('{BusinessCentralCredentials.company}')/workflowItems?$filter=number eq '"+number+"'"

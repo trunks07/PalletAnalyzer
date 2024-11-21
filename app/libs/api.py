@@ -43,7 +43,6 @@ class BusinessCentral:
 
         async with aiohttp.ClientSession() as session:
             async with session.get(url, data=body, headers=headers) as resp:
-                print(resp)
                 response = await resp.json()
 
         return response
@@ -369,8 +368,8 @@ class S3:
                 mime_type = mime_type or "application/octet-stream"
                 num_bytes = len(image_data)
 
-            return {
-                "image_data": image_data,
-                "mime_type": mime_type,
-                "num_bytes": num_bytes
-            }
+        return {
+            "image_data": image_data,
+            "mime_type": mime_type,
+            "num_bytes": num_bytes
+        }

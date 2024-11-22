@@ -46,16 +46,17 @@ class PalletService:
                     "product_parts": [
                         {
                             "part": "Head",
+                            "orientation": "The orientation how we should position the part",
                             "dimensions": {
                                 "length": "(Product part length)",
                                 "width": "(Product part width)",
                                 "height": "(Product part height)"
                             },
                             "comment": "(Product part comment regarding the pallet used)",
-                            "overall_height": "(Oversall height of the pallet when all the parts included in this are inside it)",
-                            "overall_weight": "(Oversall weight of the pallet when all the parts included in this are inside it)"
                         }
-                    ]
+                    ],
+                    "overall_height": "(Oversall height of the pallet when all the parts included in this are inside it including the pallet itself)",
+                    "overall_weight": "(Oversall weight of the pallet when all the parts included in this are inside it including the pallet itself)"
                 }
             ],
             "overall_comment": "(Overall comment on the solution)"

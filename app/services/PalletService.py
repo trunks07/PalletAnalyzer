@@ -55,8 +55,8 @@ class PalletService:
                             "comment": "(Product part comment regarding the pallet used)",
                         }
                     ],
-                    "overall_height": "(Oversall height of the pallet when all the parts included in this are inside it including the pallet itself)",
-                    "overall_weight": "(Oversall weight of the pallet when all the parts included in this are inside it including the pallet itself)"
+                    "overall_height": "(Oversall height of the pallet when the parts included for this pallet are inside it.)",
+                    "overall_weight": "(Oversall weight of the pallet when the parts included for this pallet are inside it.)"
                 }
             ],
             "overall_comment": "(Overall comment on the solution)"

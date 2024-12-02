@@ -45,7 +45,8 @@ class PalletService:
                     },
                     "product_parts": [
                         {
-                            "part": "Head",
+                            "part": "Product Part (Head, body, legs and etc.,)",
+                            "description": "Part Description (example: hand that holds a drum stick)",
                             "orientation": "The orientation how we should position the part",
                             "dimensions": {
                                 "length": "(Product part length)",

@@ -231,6 +231,30 @@ def convert_to_json(markdown_str):
         print("No valid JSON found in the string.")
         return None
 
+def recover_json(raw_str):
+    """
+    Attempt to recover and parse incomplete or malformed JSON from a string.
+    """
+    # Find the first JSON-like opening brace
+    json_start = raw_str.find("{")
+    if json_start == -1:
+        print("No JSON structure found.")
+        return None
+
+    # Extract potential JSON content
+    json_like_content = raw_str[json_start:]
+
+    # Incrementally parse the JSON to recover as much as possible
+    for i in range(len(json_like_content), 0, -1):
+        try:
+            return json.loads(json_like_content[:i])
+        except json.JSONDecodeError:
+            continue  # Try parsing a shorter string
+
+    # If no valid JSON could be parsed
+    print("Failed to recover JSON.")
+    return None
+
 def array_to_filter(array_list):
     # Convert the list to the desired string format
     formatted_string = f"({', '.join(map(str, array_list))})" 

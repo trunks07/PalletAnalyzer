@@ -35,6 +35,7 @@ class PalletService:
 
     def jsonFormat():
         return {
+            "name": "Product name",
             "pallets":[
                 {
                     "pallet_id": 1,

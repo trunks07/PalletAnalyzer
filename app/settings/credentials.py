@@ -56,6 +56,7 @@ class Gemini:
 
 class Catalog:
     endpoint = os.getenv("CATALOG_ENDPOINT")
+    passPhrase = os.getenv("CATALOG_PASSPHRASE")
 
 class S3:
     endpoint = os.getenv("S3_ENDPOINT")

@@ -303,9 +303,6 @@ class Catalog:
             async with session.get(url, json=body, headers=headers) as resp:
 
                 response = await resp.json()
-        print(url)
-        print(body)
-        print(response)
         return response
     
     async def POST(params="", headers={}, body={}):

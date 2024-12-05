@@ -221,3 +221,35 @@ class BusinessCentral:
         products = BusinessCentralTrait.processCompleteProductDetails(productsData)
 
         return products
+    
+    async def getSalesOrder():
+        token = await BusinessCentralApi.getBcToken()
+
+        params = f"Company('{BusinessCentralCredentials.company}')/SalesOrderV2?$orderby=postingDate desc"
+        sales_orders = await BusinessCentralApi.odataGet(token, params)
+
+        return sales_orders
+
+    async def getSalesOrderData(orderNumber):
+        token = await BusinessCentralApi.getBcToken()
+
+        params = f"Company('{BusinessCentralCredentials.company}')/SalesOrderV2?$filter=number eq '{orderNumber}'"
+        sales_orders = await BusinessCentralApi.odataGet(token, params)
+
+        return sales_orders
+
+    async def searchSalesOrderData(orderNumber):
+        token = await BusinessCentralApi.getBcToken()
+
+        params = f"Company('{BusinessCentralCredentials.company}')/SalesOrderV2?$filter=contains(number, '{orderNumber}')"
+        sales_orders = await BusinessCentralApi.odataGet(token, params)
+
+        return sales_orders
+    
+    async def getSalesOrderLine(salesOrder):
+        token = await BusinessCentralApi.getBcToken()
+
+        params = f"companies({BusinessCentralCredentials.companyId})/salesOrders({salesOrder["id"]})/salesOrderLines"
+        sales_order_line = await BusinessCentralApi.apiGet(token, params)
+
+        return sales_order_line

@@ -5,6 +5,6 @@ class CatalogTrait:
         for catalog in catalogs:
             if catalog["product_id"] == sku:
                 return {
-                    "url": await S3Service.getFile(catalog["file"]["filename"]),
+                    "url": await S3Service.getFile(f"thumbs/{catalog["file"]["filename"]}"),
                     "title": catalog["file"]["title"]
                 }

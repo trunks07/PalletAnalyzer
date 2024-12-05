@@ -4,6 +4,7 @@ from fastapi import FastAPI, APIRouter, HTTPException, Request, status
 from fastapi.responses import JSONResponse
 
 from app.services.CatalogService import CatalogService
+from app.settings.credentials import BusinessCentral as BusinessCentralCredentials
 from app.services.BusinessCentralService import BusinessCentral as BusinessCentralService
 
 router = APIRouter()
@@ -71,6 +72,55 @@ async def getCatalogs(request: Request):
 
         status_code = status.HTTP_200_OK
         response = {"status": status_code, "data": products}
+    except HTTPException  as e:
+        status_code = status.HTTP_400_BAD_REQUEST
+        response = {"status": status_code, "error": e}
+
+    return JSONResponse(status_code=status_code, content=response)
+
+@router.get("/get-sales-orders", tags=["catalogs"])
+async def getSalesOrders():
+    try:
+        sales_orders = await BusinessCentralService.getSalesOrder()
+
+        status_code = status.HTTP_200_OK
+        response = {"status": status_code, "data": {"value": sales_orders["value"], "next_url": sales_orders["@odata.context"] if "@odata.context" in sales_orders else None}}
+    except HTTPException  as e:
+        status_code = status.HTTP_400_BAD_REQUEST
+        response = {"status": status_code, "error": e}
+
+    return JSONResponse(status_code=status_code, content=response)
+
+@router.post("/get-sales-order-lines", tags=["catalogs"])
+async def getSalesOrderLines(request: Request):
+    try:
+        data = await request.json()
+        sales_orders = await BusinessCentralService.getSalesOrderData(data["order_no"])
+        sales_order_lines = await BusinessCentralService.getSalesOrderLine(sales_orders["value"][0])
+
+        order_items = []
+
+        for sales_order_line in sales_order_lines["value"]:
+            if sales_order_line["lineObjectNumber"] != BusinessCentralCredentials.lineObjectNumber:
+                order_items.append(sales_order_line)
+
+
+        status_code = status.HTTP_200_OK
+        response = {"status": status_code, "data": order_items}
+    except HTTPException  as e:
+        status_code = status.HTTP_400_BAD_REQUEST
+        response = {"status": status_code, "error": e}
+
+    return JSONResponse(status_code=status_code, content=response)
+
+@router.post("/search-sales-orders", tags=["catalogs"])
+async def searchSalesOrders(request: Request):
+    try:
+        data = await request.json()
+        sales_orders = await BusinessCentralService.searchSalesOrderData(data["order_no"])
+
+        status_code = status.HTTP_200_OK
+        response = {"status": status_code, "data": sales_orders}
     except HTTPException  as e:
         status_code = status.HTTP_400_BAD_REQUEST
         response = {"status": status_code, "error": e}

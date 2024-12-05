@@ -22,7 +22,7 @@ class BusinessCentral:
         clientId = os.getenv("BC_TEST_CLIENT_ID")
         clientSecret = os.getenv("BC_TEST_CLIENT_SECRET")
         tokeEndPoint = os.getenv("BC_TEST_TOKEN_ENDPOINT")
-        apiScopes = os.getenv("BC_TEST_API_SCOPES")
+        apiScopes = os.getenv("BC_TEST_API_SCOPE")
         odataEndPoint = os.getenv("BC_TEST_ODATA_ENDPOINT")
         apiEndPoint = os.getenv("BC_TEST_API_ENDPOINT")
         company = os.getenv("BC_TEST_COMPANY")
@@ -47,6 +47,7 @@ class BusinessCentral:
     CIACustomer = os.getenv("CIA_CUSTOMER")
     chargeItemId = os.getenv("CHARGE_ITEM_ID")
     chargeItemNumber = os.getenv("CHARGE_ITEM_NUMBER")
+    lineObjectNumber = os.getenv("LINE_OBJECT_NUMBER")
 
 class Gemini:
     apiKey = os.getenv("GEMINI_API_KEY")
